@@ -34,24 +34,30 @@ public class MinesweeperGame {
             }
             String cellInput = getCellInputFromUser(scanner);
             String userActionInput = getUserActionInputFrom(scanner);
-            int selectedColumnIndex = getSelectedColumnIndex(cellInput);
-            int selectedRowIndex = getSelectedRowIndex(cellInput);
-            if (doesUserChooseToPlantFlag(userActionInput)) { // 사용자가 깃발꽂기를 선택한다면
-                BOARD[selectedRowIndex][selectedColumnIndex] = FLAG_SIGN;
-                checkIfGameIsOver();
-            } else if (doesUserChooseToOpenCell(userActionInput)) { // 셀 오픈을 선택한다면
-                if (isLandMineCell(selectedRowIndex, selectedColumnIndex)) { // 사용자가 지뢰 셀을 선택한 경우
-                    BOARD[selectedRowIndex][selectedColumnIndex] = LAND_MINE_SIGN;
-                    changeGameStatusToLose();
-                    continue;
-                } else { // 사용자가 일반 셀을 선택한 경우
-                    open(selectedRowIndex, selectedColumnIndex);
-                }
-                checkIfGameIsOver();
-            } else {
-                System.out.println("잘못된 번호를 선택하셨습니다.");
-            }
+            actOnCell(cellInput, userActionInput);
         }
+    }
+
+    private static void actOnCell(String cellInput, String userActionInput) {
+        int selectedColumnIndex = getSelectedColumnIndex(cellInput);
+        int selectedRowIndex = getSelectedRowIndex(cellInput);
+        if (doesUserChooseToPlantFlag(userActionInput)) { // 사용자가 깃발꽂기를 선택한다면
+            BOARD[selectedRowIndex][selectedColumnIndex] = FLAG_SIGN;
+            checkIfGameIsOver();
+            return;
+        }
+        if (doesUserChooseToOpenCell(userActionInput)) { // 셀 오픈을 선택한다면
+            if (isLandMineCell(selectedRowIndex, selectedColumnIndex)) { // 사용자가 지뢰 셀을 선택한 경우
+                BOARD[selectedRowIndex][selectedColumnIndex] = LAND_MINE_SIGN;
+                changeGameStatusToLose();
+                return;
+            }
+            // 사용자가 일반 셀을 선택한 경우 open
+            open(selectedRowIndex, selectedColumnIndex);
+            checkIfGameIsOver();
+            return;
+        }
+        System.out.println("잘못된 번호를 선택하셨습니다.");
     }
 
     private static boolean isLandMineCell(int selectedRowIndex, int selectedColumnIndex) {
