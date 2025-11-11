@@ -23,8 +23,10 @@ public class MinesweeperGame {
     public static void main(String[] args) {
         showGameStartComments();
         initializeGame();
+
         while (true) {
             showBoard();
+
             if (doesUserWinTheGame()) {
                 System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");
                 break;
@@ -33,6 +35,7 @@ public class MinesweeperGame {
                 System.out.println("지뢰를 밟았습니다. GAME OVER!");
                 break;
             }
+
             String cellInput = getCellInputFromUser();
             String userActionInput = getUserActionInputFrom();
             actOnCell(cellInput, userActionInput);
@@ -42,11 +45,13 @@ public class MinesweeperGame {
     private static void actOnCell(String cellInput, String userActionInput) {
         int selectedColumnIndex = getSelectedColumnIndex(cellInput);
         int selectedRowIndex = getSelectedRowIndex(cellInput);
+
         if (doesUserChooseToPlantFlag(userActionInput)) { // 사용자가 깃발꽂기를 선택한다면
             BOARD[selectedRowIndex][selectedColumnIndex] = FLAG_SIGN;
             checkIfGameIsOver();
             return;
         }
+
         if (doesUserChooseToOpenCell(userActionInput)) { // 셀 오픈을 선택한다면
             if (isLandMineCell(selectedRowIndex, selectedColumnIndex)) { // 사용자가 지뢰 셀을 선택한 경우
                 BOARD[selectedRowIndex][selectedColumnIndex] = LAND_MINE_SIGN;
@@ -170,11 +175,13 @@ public class MinesweeperGame {
                 BOARD[row][col] = CLOSED_CELL_SIGN;
             }
         }
+
         for (int i = 0; i < LAND_MINE_COUNT; i++) {
             int col = new Random().nextInt(BOARD_COL_SIZE);
             int row = new Random().nextInt(BOARD_ROW_SIZE);
             LAND_MINES[row][col] = true;
         }
+
         for (int row = 0; row < BOARD_ROW_SIZE; row++) {
             for (int col = 0; col < BOARD_COL_SIZE; col++) {
                 int count = 0;
@@ -233,6 +240,7 @@ public class MinesweeperGame {
         } else {
             BOARD[row][col] = OPENED_CELL_SIGN; // 열린 빈 셀로 표시
         }
+
         open(row - 1, col - 1);
         open(row - 1, col);
         open(row - 1, col + 1);
