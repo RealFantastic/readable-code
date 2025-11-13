@@ -184,38 +184,43 @@ public class MinesweeperGame {
 
         for (int row = 0; row < BOARD_ROW_SIZE; row++) {
             for (int col = 0; col < BOARD_COL_SIZE; col++) {
-                int count = 0;
-                if (!isLandMineCell(row, col)) {
-                    if (row - 1 >= 0 && col - 1 >= 0 && isLandMineCell(row - 1, col - 1)) { // 선택 지점의 왼쪽 위에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (row - 1 >= 0 && isLandMineCell(row - 1, col)) { // 선택 지점의 정윗방향에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (row - 1 >= 0 && col + 1 < BOARD_COL_SIZE && isLandMineCell(row - 1, col + 1)) { // 선택 지점의 오른쪽 위에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (col - 1 >= 0 && isLandMineCell(row, col - 1)) { //선택 지점의 정왼쪽에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (col + 1 < BOARD_COL_SIZE && isLandMineCell(row, col + 1)) { // 선택 지점의 정 오른쪽 방향에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (row + 1 < BOARD_ROW_SIZE && col - 1 >= 0 && isLandMineCell(row + 1, col - 1)) { //선택 지점의 왼쪽 아래에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (row + 1 < BOARD_ROW_SIZE && isLandMineCell(row + 1, col)) { //선택 지점의 정아래에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    if (row + 1 < BOARD_ROW_SIZE && col + 1 < BOARD_COL_SIZE && isLandMineCell(row + 1, col + 1)) { //선택 지점의 오른쪽 아래에 지뢰가 있는지 확인
-                        count++;
-                    }
-                    NEARBY_LAND_MINE_COUNTS[row][col] = count; // 각 위치에 확인한 지뢰 개수 입력
+                if (isLandMineCell(row, col)) {
+                    NEARBY_LAND_MINE_COUNTS[row][col] = 0;
                     continue;
                 }
-                NEARBY_LAND_MINE_COUNTS[row][col] = 0;
+                int count = countNearbyLandMines(row, col);
+                NEARBY_LAND_MINE_COUNTS[row][col] = count; // 각 위치에 확인한 지뢰 개수 입력
             }
         }
+    }
+
+    private static int countNearbyLandMines(int row, int col) {
+        int count = 0;
+        if (row - 1 >= 0 && col - 1 >= 0 && isLandMineCell(row - 1, col - 1)) { // 선택 지점의 왼쪽 위에 지뢰가 있는지 확인
+            count++;
+        }
+        if (row - 1 >= 0 && isLandMineCell(row - 1, col)) { // 선택 지점의 정윗방향에 지뢰가 있는지 확인
+            count++;
+        }
+        if (row - 1 >= 0 && col + 1 < BOARD_COL_SIZE && isLandMineCell(row - 1, col + 1)) { // 선택 지점의 오른쪽 위에 지뢰가 있는지 확인
+            count++;
+        }
+        if (col - 1 >= 0 && isLandMineCell(row, col - 1)) { //선택 지점의 정왼쪽에 지뢰가 있는지 확인
+            count++;
+        }
+        if (col + 1 < BOARD_COL_SIZE && isLandMineCell(row, col + 1)) { // 선택 지점의 정 오른쪽 방향에 지뢰가 있는지 확인
+            count++;
+        }
+        if (row + 1 < BOARD_ROW_SIZE && col - 1 >= 0 && isLandMineCell(row + 1, col - 1)) { //선택 지점의 왼쪽 아래에 지뢰가 있는지 확인
+            count++;
+        }
+        if (row + 1 < BOARD_ROW_SIZE && isLandMineCell(row + 1, col)) { //선택 지점의 정아래에 지뢰가 있는지 확인
+            count++;
+        }
+        if (row + 1 < BOARD_ROW_SIZE && col + 1 < BOARD_COL_SIZE && isLandMineCell(row + 1, col + 1)) { //선택 지점의 오른쪽 아래에 지뢰가 있는지 확인
+            count++;
+        }
+        return count;
     }
 
     private static void showGameStartComments() {
