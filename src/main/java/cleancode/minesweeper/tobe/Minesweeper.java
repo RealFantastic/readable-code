@@ -1,10 +1,13 @@
 package cleancode.minesweeper.tobe;
 
+import cleancode.minesweeper.tobe.game.GameInitializable;
+import cleancode.minesweeper.tobe.game.GameRunnable;
 import cleancode.minesweeper.tobe.gamelevel.GameLevel;
 import cleancode.minesweeper.tobe.io.ConsoleInputHandler;
 import cleancode.minesweeper.tobe.io.ConsoleOutputHandler;
 
-public class Minesweeper implements Game{
+// Game interface를 GameInitializable, GameRunnable 두 개의 interface로 나누어, 필요한 것만 구현하도록 변경
+public class Minesweeper implements GameInitializable, GameRunnable {
 
     private final GameBoard gameBoard;
     private final BoardIndexConverter boardIndexConverter = new BoardIndexConverter();
